@@ -6,7 +6,7 @@
 **Affiliation:** AIMETON Research  
 **Corresponding author:** marareskuldi@aimeton.ru  
 **Website:** https://www.aimeton.ru  
-**Preprint version:** 0.5  
+**Preprint version:** 0.6  
 **Experiment date:** 8 September 2026
 
 ## Abstract
@@ -21,7 +21,7 @@ Five contemporary long-context models were evaluated: GPT-5.6 Sol, Kimi K3, Deep
 
 We introduce **ACI_B2 (ACCB Cognitive Integrity)**, an equally weighted composite of six normalized dimensions: Control State Score (CSS), Global Aggregate Score (GAS), Temporal Integrity Score (TIS), Dependency Consistency Score (DCS), Motor/Procedure Coherence Score (MCS), and Safety Score (SAS). `ACI_B2_min`, the minimum component value, captures severe local failure that may be obscured by the mean.
 
-In this pilot diagnostic study, with one generation per model × load condition (n=1), the observed five-tier mean ACI_B2 values were 0.907 for GPT-5.6 Sol, 0.888 for Kimi K3, 0.837 for DeepSeek V4 Pro, 0.756 for GLM-5.2, and 0.631 for Qwen 3.7 Plus. These values describe the realized observations rather than estimating expected model performance. The observed trajectories differed across models and were not strictly monotonic; with n=1, this is hypothesis-generating evidence rather than evidence for the shape of an underlying degradation function.
+In this pilot diagnostic study, with one generation per model × load condition (n=1), the observed five-tier mean ACI_B2 values were 0.907 for GPT-5.6 Sol, 0.888 for Kimi K3, 0.837 for DeepSeek V4 Pro, 0.756 for GLM-5.2, and 0.631 for Qwen 3.7 Plus. These values describe the realized observations rather than estimating expected model performance. The primary GPT-5.6 Sol request did not force low reasoning effort; however, reasoning compute was not normalized to an equal hard budget across vendors. The observed trajectories differed across models and were not strictly monotonic; with n=1, this is hypothesis-generating evidence rather than evidence for the shape of an underlying degradation function.
 
 The results support a distinction between **context acceptance**, **context utilization**, and **effective cognitive context**. Nominal context-window size alone is insufficient to characterize an LLM's ability to maintain a coherent representation of a long, dynamically evolving information state.
 
@@ -251,13 +251,15 @@ Inference-time reasoning compute was not fully normalized across vendors.
 
 | Model | Regime used in the published matrix |
 |---|---|
-| GPT-5.6 Sol | frozen admitted provider route; reasoning budget not cross-vendor normalized |
+| GPT-5.6 Sol | frozen admitted OpenRouter→OpenAI route; no explicit reasoning-effort control was sent (`reasoning_effort_sent=null`); reasoning budget not cross-vendor normalized |
 | Kimi K3 | frozen admitted provider route; reasoning budget not cross-vendor normalized |
 | DeepSeek V4 Pro | frozen admitted provider route; reasoning budget not cross-vendor normalized |
 | Qwen 3.7 Plus | frozen admitted provider route; reasoning budget not cross-vendor normalized |
 | GLM-5.2 | explicit high-reasoning regime with a 32,768-token reasoning budget |
 
 The cross-model values therefore characterize model × route × inference-regime systems rather than weight-only model comparisons under equal compute.
+
+A pre-execution methodology amendment recorded that an **older historical Sol helper** had once forced `reasoning.effort=low`. That helper was not the code used by the published primary B2 run. The exact executed Site Auditor SHA `390e279549f2c9ec4a6fd8700e7dce9274252c88` built the Sol request without a `reasoning` object, recorded `reasoning_effort_sent=null`, and declared `forced_low_reasoning_effort=false`. The exact-head contract test also prohibited `"effort": "low"`. The remaining limitation is therefore lack of equal cross-vendor reasoning-budget normalization, not a forced-low Sol condition. See `methodology/ACCB_B2_SOL_REASONING_SCOPE_CLARIFICATION_v0.1.md`.
 
 ## 6. Output Task
 
@@ -335,8 +337,9 @@ $$
 ACI_{B2}=\frac{CSS+GAS+TIS+DCS+MCS+SAS}{6}.
 $$
 
-$$
+$
 ACI_{B2,min}=\min(CSS,GAS,TIS,DCS,MCS,SAS).
+$
 
 ### 7.8. Rationale and sensitivity of equal dimension weights
 
@@ -345,8 +348,6 @@ The six dimension weights were fixed before the published B2 outcomes were obser
 This is a benchmark-design choice, not a uniquely validated psychometric weighting scheme. DCS and SAS are binary, whereas CSS, GAS, TIS, and MCS are fractional. A single global DCS or SAS failure can therefore reduce ACI_B2 by one sixth and force `ACI_B2_min=0`.
 
 ACI_B2 should therefore be interpreted alongside the component structure, and `ACI_B2_min=0` does not imply total task failure. A confirmatory version should include weighting sensitivity analysis and richer event-level temporal/dependency assertions.
-
-$$
 
 ## 8. Experimental Controls
 
@@ -477,7 +478,7 @@ This creates an empirical motivation for semantic compression, memory consolidat
 
 The main limitation is (n=1) generation per model × tier condition. The present study therefore does not estimate variance, confidence intervals, or statistical significance.
 
-Inference-time reasoning policies were not fully normalized across vendors.
+Inference-time reasoning policies were not fully normalized across vendors. GPT-5.6 Sol did not receive a forced-low reasoning control in the executed primary B2 run; its reasoning effort was left unspecified to the selected route.
 
 The benchmark evaluates one task family: reconstruction of a dynamically evolving structured state.
 
@@ -507,7 +508,7 @@ For example, (ECC_{0.9,0.95}) would denote the largest semantic load at which AC
 
 ACCB B2 evaluates whether large language models can preserve a coherent representation of a long and dynamically evolving semantic state.
 
-GPT-5.6 Sol achieved the highest descriptive mean across the full tested range. Kimi K3 achieved the strongest mean over the two largest semantic-load conditions. DeepSeek V4 Pro exhibited strong but non-monotonic behavior. GLM-5.2 showed saturation of its fixed reasoning budget at the two largest loads. Qwen 3.7 Plus exhibited the greatest variation in this diagnostic series.
+GPT-5.6 Sol had the highest observed descriptive mean across the full tested range in this single-generation-per-cell pilot matrix. Kimi K3 achieved the strongest mean over the two largest semantic-load conditions. DeepSeek V4 Pro exhibited strong but non-monotonic behavior. GLM-5.2 showed saturation of its fixed reasoning budget at the two largest loads. Qwen 3.7 Plus exhibited the greatest variation in this diagnostic series.
 
 The broader conclusion is more important than the ordering of individual models:
 

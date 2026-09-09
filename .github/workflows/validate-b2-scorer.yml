@@ -1,0 +1,49 @@
+name: Validate B2 scorer fixtures
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate B2 validation fixture
+        run: |
+          python benchmark/b2_validation/generate_fixture.py             --tier b2-32k             --output-dir /tmp/accb-b2-validation
+
+      - name: Positive trace must pass perfectly
+        run: |
+          python benchmark/scoring/score_accb_b2_trace.py             --gold /tmp/accb-b2-validation/gold.json             --trace /tmp/accb-b2-validation/positive_trace.json             --output /tmp/positive-score.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          result = json.loads(Path("/tmp/positive-score.json").read_text())
+          assert result["passed"] is True, result
+          assert result["ACI_B2"] == 1.0, result
+          assert result["ACI_B2_min"] == 1.0, result
+          assert result["critical_failure_count"] == 0, result
+          PY
+
+      - name: Negative trace must fail
+        shell: bash
+        run: |
+          set -euo pipefail
+          if python benchmark/scoring/score_accb_b2_trace.py             --gold /tmp/accb-b2-validation/gold.json             --trace /tmp/accb-b2-validation/negative_trace.json             --output /tmp/negative-score.json; then
+            echo "negative trace unexpectedly passed"
+            exit 1
+          fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          result = json.loads(Path("/tmp/negative-score.json").read_text())
+          assert result["passed"] is False, result
+          assert result["critical_failure_count"] > 0, result
+          assert result["ACI_B2"] < 1.0, result
+          PY

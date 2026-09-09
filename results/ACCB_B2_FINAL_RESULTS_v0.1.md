@@ -58,7 +58,7 @@ Mean ACI_B2 over the two largest semantic loads:
 | Qwen 3.7 Plus | 0.530093 |
 | GLM-5.2 reasoning-normalized | 0.519676 |
 
-GPT-5.6 Sol has the highest mean over the complete five-tier range. Kimi K3 has the highest mean over the two largest tiers.
+GPT-5.6 Sol has the highest **observed descriptive** mean over the complete five-tier range in this n=1 diagnostic. Kimi K3 has the highest observed descriptive mean over the two largest tiers.
 
 ## Execution integrity
 
@@ -155,6 +155,8 @@ The models show materially different profiles.
 
 GLM demonstrated that an unspecified provider-default reasoning policy can dominate the result.
 
+A separate pre-execution amendment noted that an older historical OpenRouter helper for Sol had once forced `reasoning.effort=low`. That helper was not used by the published primary B2 execution. At exact Site Auditor SHA `390e279549f2c9ec4a6fd8700e7dce9274252c88`, the Sol payload contained no `reasoning` object; the execution receipt recorded `reasoning_effort_sent=null` and the run manifest recorded `forced_low_reasoning_effort=false`. Therefore the published Sol row is not subject to a forced-low-effort confound. The remaining limitation is lack of equal hard reasoning-budget normalization across vendors.
+
 Under provider defaults the selected endpoint spent 128k-131072 tokens entirely on hidden reasoning and produced no final answer. Under an explicit high-reasoning 32,768-token thinking budget, all five cells became scoreable.
 
 Thus a reasoning-model benchmark must retain, where supported:
@@ -198,7 +200,7 @@ and motivates a more general capability model:
 
 1. Cognitive continuity is not equivalent to nominal context-window size.
 2. Multi-megabyte semantic payloads can remain usefully processable, but integrity varies materially by model.
-3. GPT-5.6 Sol is the strongest overall model in this five-tier diagnostic.
+3. GPT-5.6 Sol has the highest observed descriptive mean in this five-tier n=1 diagnostic; this is not a universal ranking.
 4. Kimi K3 is the strongest on average across the two largest tiers.
 5. Reasoning allocation can materially alter scoreability, latency and cost.
 6. Transport/integration/output-budget failures must remain separate from cognitive failures.

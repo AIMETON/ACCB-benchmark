@@ -6,7 +6,7 @@ version: "0.5"
 authors:
   - family-names: "Marareskul"
     given-names: "D. I."
-    email: "marareskuldi@aimeton.tu"
+    email: "marareskuldi@aimeton.ru"
     affiliation: "AIMETON Research"
 repository-code: "https://github.com/AIMETON/ACCB-benchmark"
 url: "https://www.aimeton.ru"

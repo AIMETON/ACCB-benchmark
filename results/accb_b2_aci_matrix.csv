@@ -1,0 +1,6 @@
+model,reasoning_regime,b2_32k,b2_64k,b2_140k,b2_562k,b2_2191k,mean
+GPT-5.6 Sol,provider-admitted route / not cross-vendor normalized,1.000000,0.925926,1.000000,1.000000,0.608796,0.906944
+Kimi K3,provider-admitted route / not cross-vendor normalized,1.000000,0.810185,1.000000,0.814815,0.814815,0.887963
+DeepSeek V4 Pro,provider-admitted route / not cross-vendor normalized,1.000000,0.740741,1.000000,0.814815,0.629630,0.837037
+GLM-5.2,explicit high reasoning / 32768-token budget,1.000000,0.814815,0.925926,0.560185,0.479167,0.756019
+Qwen 3.7 Plus,provider-admitted route / not cross-vendor normalized,0.759259,0.407407,0.925926,0.555556,0.504629,0.630555

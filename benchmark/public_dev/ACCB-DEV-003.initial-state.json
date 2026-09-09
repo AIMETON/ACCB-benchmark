@@ -1,0 +1,22 @@
+{
+  "scenario_id": "ACCB-DEV-003",
+  "state_version": "0.1",
+  "mission_state": {
+    "status": "active",
+    "mission_complete": false,
+    "safe_next_step_exists": true,
+    "cognitive_drift": "suspected"
+  },
+  "environment_state": {
+    "verified_execution_path": "command_router",
+    "runtime_state": "available",
+    "local_cache_state": "diverged"
+  },
+  "required_recovery_sequence": [
+    "stop mutations",
+    "read durable truth",
+    "verify runtime state",
+    "reconstruct critical path",
+    "resume bounded execution"
+  ]
+}

@@ -550,7 +550,11 @@ To protect scientific independence, support for future experiments must not gran
 Current support priorities are documented at:
 https://github.com/AIMETON/ACCB-benchmark/blob/main/SUPPORT.md
 
-## 19. Affiliation and Conflict-of-Interest Statement
+## 19. Funding, Affiliation, and Conflict-of-Interest Statement
+
+**Funding of the completed B2 pilot.** This preprint does not declare a separate external funding source for the completed B2 pilot experiment. Future external financial or infrastructure support used for a specific campaign should be disclosed in the corresponding publication and public documentation.
+
+**Affiliation and conflict of interest.**
 
 The author is affiliated with AIMETON Research and is the developer and maintainer of ACCB. This relationship is disclosed for transparency. The present work reports a pilot research benchmark and is not a commercial model ranking.
 

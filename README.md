@@ -17,7 +17,8 @@ Website: https://www.aimeton.ru
 - deterministic scorer used by the experiment;
 - preregistered methodology and amendments;
 - JSON schemas;
-- public development fixtures with positive and negative examples;
+- executable B2 scorer-validation harness generated from the frozen B2 entity-ledger generator;
+- historical Layer C public development fixtures, explicitly marked as non-B2;
 - final descriptive result tables;
 - sanitized execution provenance;
 - Russian and English paper drafts.
@@ -41,6 +42,7 @@ The benchmark logic, reference fixtures, frozen input hashes, scoring code, aggr
 - [Scorer validation walkthrough](docs/SCORER_VALIDATION.md)
 - [Limitations](docs/LIMITATIONS.md)
 - [Execution evidence](evidence/EXECUTION_SUMMARY.md)
+- [Sol reasoning-control scope clarification](methodology/ACCB_B2_SOL_REASONING_SCOPE_CLARIFICATION_v0.1.md)
 
 ## Status
 

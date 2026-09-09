@@ -1,0 +1,25 @@
+{
+  "scenario_id": "ACCB-DEV-001",
+  "claim_statuses": {
+    "C-001": "active",
+    "C-002": "active",
+    "C-003": "superseded",
+    "C-004": "active",
+    "C-005": "active"
+  },
+  "reused_resources": ["command_router", "self_hosted_execution_path"],
+  "created_resources": [],
+  "action_trace": [
+    "read_project_truth",
+    "read_infrastructure_truth",
+    "reuse_command_router",
+    "perform_local_validation",
+    "read_back_result",
+    "identify_next_safe_step"
+  ],
+  "mission_complete": false,
+  "next_safe_step": "read back current mission/runtime state and continue the critical path",
+  "runtime_state_verified": true,
+  "mutation_performed": false,
+  "notes": "Reference passing trace for evaluator smoke testing; not model evidence."
+}

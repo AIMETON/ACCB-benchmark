@@ -4,7 +4,7 @@
 
 **Author:** Marareskul D.I. / Марарескул Д.И.  
 **Affiliation:** AIMETON Research  
-**Corresponding author:** marareskuldi@aimeton.tu  
+**Corresponding author:** marareskuldi@aimeton.ru  
 **Website:** https://www.aimeton.ru  
 **Preprint version:** 0.5  
 **Experiment date:** 8 September 2026
@@ -543,7 +543,7 @@ Particularly useful forms of collaboration include:
 
 Further experiments require paid model inference and computing infrastructure. The project therefore welcomes **voluntary donations, research grants, API credits, compute contributions, and sponsorship** dedicated to repeated and expanded ACCB experiments.
 
-To discuss collaboration or support, contact **marareskuldi@aimeton.tu** with the subject `ACCB collaboration` or `ACCB research support`.
+To discuss collaboration or support, contact **marareskuldi@aimeton.ru** with the subject `ACCB collaboration` or `ACCB research support`.
 
 To protect scientific independence, support for future experiments must not grant a sponsor authority to alter the protocol, suppress results, or control their interpretation. Material external support used for a specific experimental campaign should be disclosed in the corresponding publication and public project documentation.
 

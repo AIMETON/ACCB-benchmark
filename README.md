@@ -8,7 +8,7 @@ This repository is the canonical public source for the ACCB B2 pilot/diagnostic 
 
 **Marareskul D.I. / Марарескул Д.И.**  
 AIMETON Research  
-Email: **marareskuldi@aimeton.tu**  
+Email: **marareskuldi@aimeton.ru**  
 Website: https://www.aimeton.ru
 
 ## What is published

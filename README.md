@@ -31,6 +31,7 @@ The benchmark logic, reference fixtures, frozen input hashes, scoring code, aggr
 - [Context generation](docs/CONTEXT_GENERATION.md)
 - [Metric definitions](docs/METRIC_DEFINITIONS.md)
 - [Reproducibility statement](docs/REPRODUCIBILITY.md)
+- [Scorer validation walkthrough](docs/SCORER_VALIDATION.md)
 - [Limitations](docs/LIMITATIONS.md)
 - [Execution evidence](evidence/EXECUTION_SUMMARY.md)
 

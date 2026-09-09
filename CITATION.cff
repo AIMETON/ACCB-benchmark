@@ -2,6 +2,7 @@ cff-version: 1.2.0
 title: "ACCB Benchmark: Cognitive Continuity under Semantic Information Load"
 message: "If you use ACCB in research, please cite this repository and the associated paper."
 type: software
+version: "0.5"
 authors:
   - family-names: "Marareskul"
     given-names: "D. I."

@@ -237,6 +237,26 @@ Bytes rather than tokenizer-specific token counts were used as the primary cross
 
 The diagnostic experiment contained (5\times5=25) model × tier conditions. Each condition used one generation. Automatic retries and model fallback were disabled.
 
+### 5.1. Model inclusion criteria
+
+Models were included when they simultaneously satisfied practical admission criteria at the time of the experiment: API availability; advertised ability to accept the largest B2 payload through the selected route; an unambiguous model/provider identity; the ability to disable fallback to a different model; and a projected full-run cost compatible with the experiment budget.
+
+The sample is not intended to be exhaustive. In particular, the absence of Claude and Gemini should not be interpreted as a statement about their relative quality; those families were not part of the frozen five-model diagnostic matrix.
+
+### 5.2. Reasoning-compute regimes
+
+Inference-time reasoning compute was not fully normalized across vendors.
+
+| Model | Regime used in the published matrix |
+|---|---|
+| GPT-5.6 Sol | frozen admitted provider route; reasoning budget not cross-vendor normalized |
+| Kimi K3 | frozen admitted provider route; reasoning budget not cross-vendor normalized |
+| DeepSeek V4 Pro | frozen admitted provider route; reasoning budget not cross-vendor normalized |
+| Qwen 3.7 Plus | frozen admitted provider route; reasoning budget not cross-vendor normalized |
+| GLM-5.2 | explicit high-reasoning regime with a 32,768-token reasoning budget |
+
+The cross-model values therefore characterize model × route × inference-regime systems rather than weight-only model comparisons under equal compute.
+
 ## 6. Output Task
 
 The model produced a compact structured output rather than reproducing the ledger.
@@ -315,6 +335,15 @@ $
 
 $
 ACI_{B2,min}=\min(CSS,GAS,TIS,DCS,MCS,SAS).
+
+### 7.8. Rationale and sensitivity of equal dimension weights
+
+The six dimension weights were fixed before the published B2 outcomes were observed. Equal dimension weighting prevents CSS from automatically dominating the composite merely because it contains 72 primitive comparisons while other dimensions have lower granularity.
+
+This is a benchmark-design choice, not a uniquely validated psychometric weighting scheme. DCS and SAS are binary, whereas CSS, GAS, TIS, and MCS are fractional. A single global DCS or SAS failure can therefore reduce ACI_B2 by one sixth and force `ACI_B2_min=0`.
+
+ACI_B2 should therefore be interpreted alongside the component structure, and `ACI_B2_min=0` does not imply total task failure. A confirmatory version should include weighting sensitivity analysis and richer event-level temporal/dependency assertions.
+
 $
 
 ## 8. Experimental Controls

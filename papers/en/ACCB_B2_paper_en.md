@@ -2,9 +2,11 @@
 
 ## An Experimental Study of Effective Cognitive Context in Contemporary LLMs
 
-**Authors:** [to be completed before publication]  
+**Author:** Marareskul D.I. / Марарескул Д.И.  
 **Affiliation:** AIMETON Research  
-**Preprint version:** 0.4 (major revision)  
+**Corresponding author:** marareskuldi@aimeton.ru  
+**Website:** https://www.aimeton.ru  
+**Preprint version:** 0.5  
 **Experiment date:** 8 September 2026
 
 ## Abstract
@@ -523,6 +525,40 @@ The repository publishes the frozen B2 context generator, deterministic scorer, 
 Recommended citation:
 
 **AIMETON Research. ACCB Benchmark: Cognitive Continuity under Semantic Information Load. Public research repository, 2026. https://github.com/AIMETON/ACCB-benchmark**
+
+## 18. Collaboration and Support for Future Research
+
+ACCB is being developed as an open research project. The author welcomes collaboration with researchers, model developers, inference providers, evaluation specialists, long-term-memory researchers, and agent-system developers.
+
+Particularly useful forms of collaboration include:
+
+- independent replication of B2;
+- repeated trials with multiple generations per model × load condition;
+- expansion to additional models and providers;
+- denser semantic-load sampling;
+- normalization of inference-time reasoning budgets;
+- richer TIS and DCS component metrics;
+- statistical analysis and estimation of Effective Cognitive Context (ECC);
+- provision of compute resources or API credits.
+
+Further experiments require paid model inference and computing infrastructure. The project therefore welcomes **voluntary donations, research grants, API credits, compute contributions, and sponsorship** dedicated to repeated and expanded ACCB experiments.
+
+To discuss collaboration or support, contact **marareskuldi@aimeton.ru** with the subject `ACCB collaboration` or `ACCB research support`.
+
+To protect scientific independence, support for future experiments must not grant a sponsor authority to alter the protocol, suppress results, or control their interpretation. Material external support used for a specific experimental campaign should be disclosed in the corresponding publication and public project documentation.
+
+Current support priorities are documented at:
+https://github.com/AIMETON/ACCB-benchmark/blob/main/SUPPORT.md
+
+## 19. Funding, Affiliation, and Conflict-of-Interest Statement
+
+**Funding of the completed B2 pilot.** This preprint does not declare a separate external funding source for the completed B2 pilot experiment. Future external financial or infrastructure support used for a specific campaign should be disclosed in the corresponding publication and public documentation.
+
+**Affiliation and conflict of interest.**
+
+The author is affiliated with AIMETON Research and is the developer and maintainer of ACCB. This relationship is disclosed for transparency. The present work reports a pilot research benchmark and is not a commercial model ranking.
+
+Future donations, grants, API credits, or infrastructure support should not alter the benchmark methodology or publication criteria. Any material support used for a specific experiment should be disclosed in the corresponding report.
 
 ## References
 

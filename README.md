@@ -4,6 +4,13 @@
 
 This repository is the canonical public source for the ACCB B2 pilot/diagnostic campaign conducted on 2026-09-08.
 
+## Author and contact
+
+**Marareskul D.I. / Марарескул Д.И.**  
+AIMETON Research  
+Email: **marareskuldi@aimeton.ru**  
+Website: https://www.aimeton.ru
+
 ## What is published
 
 - frozen B2 generator;
@@ -44,3 +51,14 @@ A future confirmatory campaign should preregister repeated trials, normalized re
 ## License
 
 See [LICENSE](LICENSE).
+
+
+## Collaboration and support
+
+ACCB welcomes independent replication, methodological collaboration, additional model/provider coverage, API credits, compute contributions, research grants, and voluntary donations supporting future experiments.
+
+The immediate funding priority is a confirmatory campaign with repeated trials per model × load cell, which would allow variance estimates and statistically interpretable confidence intervals.
+
+Scientific independence is a condition of support: sponsors or donors do not receive authority to alter protocols, suppress results, or control interpretation. Material support used in a specific experimental campaign should be disclosed publicly.
+
+See [SUPPORT.md](SUPPORT.md) for current priorities and contact details.

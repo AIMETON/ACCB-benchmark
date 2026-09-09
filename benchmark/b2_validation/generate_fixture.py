@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
+import sys
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
@@ -20,6 +21,7 @@ def load_generator() -> Any:
     if spec is None or spec.loader is None:
         raise RuntimeError(f"cannot load generator: {GENERATOR_PATH}")
     module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
 

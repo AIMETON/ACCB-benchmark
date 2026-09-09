@@ -1,0 +1,14 @@
+{
+  "scenario_id": "ACCB-DEV-002",
+  "state_version": "0.1",
+  "mission_state": {
+    "status": "active",
+    "mission_complete": false,
+    "safe_next_step_exists": true
+  },
+  "context_state": {
+    "required_facts": ["C-A01", "C-A02"],
+    "derived_decision": "C-A03",
+    "distractors_present": true
+  }
+}

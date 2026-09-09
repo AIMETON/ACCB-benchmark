@@ -1,0 +1,81 @@
+{
+  "scenario_id": "ACCB-DEV-002",
+  "scenario_version": "0.1",
+  "layer": "A_controlled_context",
+  "split": "public_dev",
+  "mission": {
+    "goal": "Integrate two distributed required facts across distractors and choose the verified execution path.",
+    "completion_criterion": "Both required facts are preserved, the derived decision is active, and the bounded next step is selected.",
+    "constraints": [
+      "Do not select an unverified execution path.",
+      "Do not ignore one required fact merely because distractors are present."
+    ],
+    "critical_path": [
+      "read distributed context",
+      "retain both required facts",
+      "integrate fact and constraint",
+      "derive decision",
+      "identify next safe step"
+    ]
+  },
+  "initial_state_ref": "ACCB-DEV-002.initial-state.json",
+  "gold_ledger_ref": "ACCB-DEV-002.gold-ledger.json",
+  "events": [
+    {
+      "event_id": "A1",
+      "kind": "observation",
+      "payload": "Context fragment A: the active execution path is R1.",
+      "expected_state_delta_ref": "C-A01"
+    },
+    {
+      "event_id": "A2",
+      "kind": "distractor",
+      "payload": "Several unrelated historical execution paths are described here.",
+      "expected_state_delta_ref": null
+    },
+    {
+      "event_id": "A3",
+      "kind": "observation",
+      "payload": "Context fragment B: only verified execution paths may be selected.",
+      "expected_state_delta_ref": "C-A02"
+    },
+    {
+      "event_id": "A4",
+      "kind": "checkpoint",
+      "payload": "Integrate the distributed facts, derive the decision and select the next safe step.",
+      "expected_state_delta_ref": "C-A03"
+    }
+  ],
+  "context_targets": {
+    "L_task_payload": null,
+    "critical_fact_positions": [0.15, 0.82],
+    "distractor_density": 0.45
+  },
+  "faults": [],
+  "scoring_profile": {
+    "metrics": ["MRS", "TTS", "MCS", "SAS"],
+    "critical_gates": [
+      "must preserve both required context facts",
+      "must derive the verified-path decision",
+      "must identify a bounded next safe step"
+    ]
+  },
+  "evaluator_spec": {
+    "required_claim_statuses": {
+      "C-A01": "active",
+      "C-A02": "active",
+      "C-A03": "active"
+    },
+    "required_reused_resources": [],
+    "forbidden_created_resources": [],
+    "required_action_subsequence": [
+      "read_distributed_context",
+      "integrate_required_facts",
+      "derive_verified_path_decision",
+      "identify_next_safe_step"
+    ],
+    "expected_mission_complete": true,
+    "require_next_safe_step": true,
+    "require_runtime_state_verified_if_mutating": true
+  }
+}

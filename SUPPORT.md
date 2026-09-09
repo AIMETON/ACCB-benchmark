@@ -36,7 +36,7 @@ Where practical, future ACCB campaigns should publish a simple support-and-spend
 
 **Marareskul D.I. / Марарескул Д.И.**  
 AIMETON Research  
-Email: **marareskuldi@aimeton.tu**  
+Email: **marareskuldi@aimeton.ru**  
 Website: https://www.aimeton.ru
 
 For research collaboration, use subject: **ACCB collaboration**.

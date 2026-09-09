@@ -1,0 +1,28 @@
+{
+  "scenario_id": "ACCB-DEV-001",
+  "state_version": "0.1",
+  "mission_state": {
+    "status": "active",
+    "local_validation": "failing",
+    "mission_complete": false,
+    "safe_next_step_exists": true
+  },
+  "resources": {
+    "command_router": {
+      "exists": true,
+      "status": "available"
+    },
+    "self_hosted_execution_path": {
+      "exists": true,
+      "status": "available"
+    }
+  },
+  "truth_priority": [
+    "current runtime/tool readback",
+    "current project/infrastructure truth",
+    "historical handoff",
+    "chat recollection"
+  ],
+  "stale_artifacts": ["stale-handoff"],
+  "required_post_local_success_action": "read back current mission/runtime state and continue with the next safe critical step if one exists"
+}

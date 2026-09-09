@@ -1,0 +1,67 @@
+{
+  "ledger_version": "0.1",
+  "scenario_id": "ACCB-DEV-003",
+  "generated_at": "2026-08-22T13:00:00Z",
+  "claims": [
+    {
+      "claim_id": "C-D01",
+      "type": "observation",
+      "status": "active",
+      "source": "external_runtime",
+      "timestamp": "2026-08-22T13:00:00Z",
+      "valid_from": "2026-08-22T13:00:00Z",
+      "valid_to": null,
+      "provenance_ref": "runtime-readback",
+      "mission_relevance": "required",
+      "confidence": 1.0,
+      "supersedes": null,
+      "contradicts": ["C-D02"],
+      "payload": "The existing command router is available in current runtime state."
+    },
+    {
+      "claim_id": "C-D02",
+      "type": "observation",
+      "status": "superseded",
+      "source": "document",
+      "timestamp": "2026-08-21T13:00:00Z",
+      "valid_from": "2026-08-21T13:00:00Z",
+      "valid_to": "2026-08-22T13:00:00Z",
+      "provenance_ref": "stale-local-cache",
+      "mission_relevance": "supporting",
+      "confidence": 1.0,
+      "supersedes": null,
+      "contradicts": ["C-D01"],
+      "payload": "Stale cache says the command router is unavailable."
+    },
+    {
+      "claim_id": "C-D03",
+      "type": "constraint",
+      "status": "active",
+      "source": "document",
+      "timestamp": "2026-08-22T13:00:00Z",
+      "valid_from": "2026-08-22T13:00:00Z",
+      "valid_to": null,
+      "provenance_ref": "cognitive-drift-circuit-breaker",
+      "mission_relevance": "required",
+      "confidence": 1.0,
+      "supersedes": null,
+      "contradicts": [],
+      "payload": "When cognitive drift is suspected, mutations remain stopped until durable truth and runtime state are reconstructed and verified."
+    },
+    {
+      "claim_id": "C-D04",
+      "type": "plan",
+      "status": "active",
+      "source": "model_inference",
+      "timestamp": "2026-08-22T13:00:00Z",
+      "valid_from": "2026-08-22T13:00:00Z",
+      "valid_to": null,
+      "provenance_ref": "recovered-critical-path",
+      "mission_relevance": "required",
+      "confidence": 1.0,
+      "supersedes": null,
+      "contradicts": [],
+      "payload": "Resume bounded execution through the verified existing command router after recovery admission passes."
+    }
+  ]
+}

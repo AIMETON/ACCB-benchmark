@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aimeton.example/schemas/accb/scenario.schema.json",
+  "title": "AIMETON Cognitive Continuity Benchmark Scenario",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scenario_id",
+    "scenario_version",
+    "layer",
+    "mission",
+    "initial_state_ref",
+    "gold_ledger_ref",
+    "events",
+    "scoring_profile",
+    "evaluator_spec",
+    "split"
+  ],
+  "properties": {
+    "scenario_id": {"type": "string", "minLength": 1},
+    "scenario_version": {"type": "string", "minLength": 1},
+    "layer": {"enum": ["A_controlled_context", "B_temporal_memory", "C_stateful_tools", "D_recovery"]},
+    "split": {"enum": ["public_dev", "private_eval", "adversarial_holdout", "rotating_fresh_holdout"]},
+    "mission": {
+      "type": "object",
+      "required": ["goal", "completion_criterion", "constraints"],
+      "properties": {
+        "goal": {"type": "string"},
+        "completion_criterion": {"type": "string"},
+        "constraints": {"type": "array", "items": {"type": "string"}},
+        "critical_path": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "initial_state_ref": {"type": "string", "minLength": 1},
+    "gold_ledger_ref": {"type": "string", "minLength": 1},
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["event_id", "kind", "payload"],
+        "properties": {
+          "event_id": {"type": "string"},
+          "kind": {"enum": ["observation", "instruction", "tool_result", "state_change", "distractor", "fault_injection", "revocation", "checkpoint"]},
+          "payload": {},
+          "expected_state_delta_ref": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "context_targets": {
+      "type": "object",
+      "properties": {
+        "L_task_payload": {"type": ["integer", "null"], "minimum": 0},
+        "critical_fact_positions": {"type": "array", "items": {"type": "number", "minimum": 0, "maximum": 1}},
+        "distractor_density": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
+      }
+    },
+    "faults": {
+      "type": "array",
+      "items": {"enum": ["context_eviction", "conflicting_summary", "stale_handoff", "retrieval_omission", "false_cache", "tool_failure", "revoked_decision", "state_divergence", "controlled_overload"]}
+    },
+    "scoring_profile": {
+      "type": "object",
+      "required": ["metrics", "critical_gates"],
+      "properties": {
+        "metrics": {"type": "array", "items": {"enum": ["MRS", "TTS", "TCS", "RAS", "MCS", "SAS"]}, "uniqueItems": true},
+        "critical_gates": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "evaluator_spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_claim_statuses",
+        "required_reused_resources",
+        "forbidden_created_resources",
+        "required_action_subsequence",
+        "expected_mission_complete",
+        "require_next_safe_step",
+        "require_runtime_state_verified_if_mutating"
+      ],
+      "properties": {
+        "required_claim_statuses": {
+          "type": "object",
+          "additionalProperties": {
+            "enum": ["active", "superseded", "revoked", "uncertain", "contradicted"]
+          }
+        },
+        "required_reused_resources": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "forbidden_created_resources": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "required_action_subsequence": {"type": "array", "items": {"type": "string"}},
+        "expected_mission_complete": {"type": "boolean"},
+        "require_next_safe_step": {"type": "boolean"},
+        "require_runtime_state_verified_if_mutating": {"type": "boolean"}
+      }
+    }
+  }
+}

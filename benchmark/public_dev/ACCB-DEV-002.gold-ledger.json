@@ -1,0 +1,52 @@
+{
+  "ledger_version": "0.1",
+  "scenario_id": "ACCB-DEV-002",
+  "generated_at": "2026-08-22T13:00:00Z",
+  "claims": [
+    {
+      "claim_id": "C-A01",
+      "type": "fact",
+      "status": "active",
+      "source": "document",
+      "timestamp": "2026-08-22T12:00:00Z",
+      "valid_from": "2026-08-22T12:00:00Z",
+      "valid_to": null,
+      "provenance_ref": "context-fragment-A",
+      "mission_relevance": "required",
+      "confidence": 1.0,
+      "supersedes": null,
+      "contradicts": [],
+      "payload": "The active execution path is resource R1."
+    },
+    {
+      "claim_id": "C-A02",
+      "type": "constraint",
+      "status": "active",
+      "source": "document",
+      "timestamp": "2026-08-22T12:00:00Z",
+      "valid_from": "2026-08-22T12:00:00Z",
+      "valid_to": null,
+      "provenance_ref": "context-fragment-B",
+      "mission_relevance": "required",
+      "confidence": 1.0,
+      "supersedes": null,
+      "contradicts": [],
+      "payload": "Only execution paths with verified state may be selected."
+    },
+    {
+      "claim_id": "C-A03",
+      "type": "decision",
+      "status": "active",
+      "source": "model_inference",
+      "timestamp": "2026-08-22T13:00:00Z",
+      "valid_from": "2026-08-22T13:00:00Z",
+      "valid_to": null,
+      "provenance_ref": "derived-from:C-A01+C-A02",
+      "mission_relevance": "required",
+      "confidence": 1.0,
+      "supersedes": null,
+      "contradicts": [],
+      "payload": "Verify R1 state, then select R1 and proceed to the bounded next step."
+    }
+  ]
+}

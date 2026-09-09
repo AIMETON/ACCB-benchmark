@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aimeton.example/schemas/accb/run_manifest.schema.json",
+  "title": "AIMETON Cognitive Continuity Benchmark Run Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "experiment_id",
+    "scenario_id",
+    "scenario_version",
+    "provider",
+    "model_identifier",
+    "timestamp",
+    "lengths",
+    "context_assembly_version",
+    "gold_ledger_version",
+    "metrics",
+    "critical_failures"
+  ],
+  "properties": {
+    "experiment_id": {"type": "string", "minLength": 1},
+    "scenario_id": {"type": "string", "minLength": 1},
+    "scenario_version": {"type": "string", "minLength": 1},
+    "provider": {"type": "string", "minLength": 1},
+    "model_identifier": {"type": "string", "minLength": 1},
+    "snapshot_if_available": {"type": ["string", "null"]},
+    "surface": {"type": ["string", "null"]},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "nominal_context_window": {"type": ["integer", "null"], "minimum": 0},
+    "lengths": {
+      "type": "object",
+      "required": ["L_model_input", "L_task_payload", "L_visible_shell", "hidden_provider_context"],
+      "properties": {
+        "L_model_input": {"type": "integer", "minimum": 0},
+        "L_task_payload": {"type": "integer", "minimum": 0},
+        "L_visible_shell": {"type": ["integer", "null"], "minimum": 0},
+        "hidden_provider_context": {"type": ["integer", "string", "null"]}
+      }
+    },
+    "prompt_hashes": {"type": "array", "items": {"type": "string"}},
+    "context_assembly_version": {"type": "string"},
+    "retrieval_policy_version": {"type": ["string", "null"]},
+    "compaction_policy_version": {"type": ["string", "null"]},
+    "memory_architecture": {"type": ["string", "null"]},
+    "reasoning_mode": {"type": ["string", "null"]},
+    "temperature": {"type": ["number", "null"]},
+    "seed": {"type": ["integer", "string", "null"]},
+    "max_output_tokens": {"type": ["integer", "null"], "minimum": 0},
+    "tool_versions": {"type": "object"},
+    "initial_environment_state_hash": {"type": ["string", "null"]},
+    "gold_ledger_version": {"type": "string"},
+    "trace_ref": {"type": ["string", "null"]},
+    "state_snapshot_refs": {"type": "array", "items": {"type": "string"}},
+    "judge_versions": {"type": "object"},
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "MRS": {"type": ["number", "null"]},
+        "TTS": {"type": ["number", "null"]},
+        "TCS": {"type": ["number", "null"]},
+        "RAS": {"type": ["number", "null"]},
+        "MCS": {"type": ["number", "null"]},
+        "SAS": {"type": ["number", "null"]},
+        "ACI": {"type": ["number", "null"]},
+        "ACI_min": {"type": ["number", "null"]}
+      }
+    },
+    "critical_failures": {"type": "array", "items": {"type": "string"}},
+    "cost_latency": {
+      "type": "object",
+      "properties": {
+        "input_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "output_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "tool_calls": {"type": ["integer", "null"], "minimum": 0},
+        "retrieval_calls": {"type": ["integer", "null"], "minimum": 0},
+        "wall_clock_seconds": {"type": ["number", "null"], "minimum": 0},
+        "storage_io_bytes": {"type": ["integer", "null"], "minimum": 0},
+        "provider_cost": {"type": ["number", "null"], "minimum": 0},
+        "currency": {"type": ["string", "null"]},
+        "recovery_overhead_seconds": {"type": ["number", "null"], "minimum": 0}
+      }
+    }
+  }
+}

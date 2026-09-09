@@ -1,0 +1,17 @@
+{
+  "scenario_id": "ACCB-DEV-004",
+  "state_version": "0.1",
+  "mission_state": {
+    "status": "active",
+    "mission_complete": false,
+    "safe_next_step_exists": true
+  },
+  "temporal_memory_state": {
+    "initial_active_decision": "C-B01",
+    "persistent_constraint": "C-B02",
+    "fallback_authorization": "C-B04",
+    "expected_later_decision": "C-B03",
+    "expected_derived_policy": "C-B05",
+    "stale_handoff_may_reappear": true
+  }
+}

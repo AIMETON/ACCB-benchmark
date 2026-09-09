@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aimeton.example/schemas/accb/typed_gold_ledger.schema.json",
+  "title": "AIMETON Cognitive Continuity Benchmark Typed Gold Ledger",
+  "type": "object",
+  "required": ["ledger_version", "scenario_id", "claims"],
+  "properties": {
+    "ledger_version": {"type": "string", "minLength": 1},
+    "scenario_id": {"type": "string", "minLength": 1},
+    "generated_at": {"type": ["string", "null"], "format": "date-time"},
+    "claims": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/claim"}
+    }
+  },
+  "$defs": {
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "type",
+        "status",
+        "source",
+        "timestamp",
+        "valid_from",
+        "provenance_ref",
+        "mission_relevance"
+      ],
+      "properties": {
+        "claim_id": {"type": "string", "minLength": 1},
+        "type": {
+          "enum": ["fact", "observation", "hypothesis", "decision", "plan", "constraint"]
+        },
+        "status": {
+          "enum": ["active", "superseded", "revoked", "uncertain", "contradicted"]
+        },
+        "source": {
+          "enum": ["tool_result", "document", "user_instruction", "model_inference", "external_runtime"]
+        },
+        "timestamp": {"type": "string", "format": "date-time"},
+        "valid_from": {"type": "string", "format": "date-time"},
+        "valid_to": {"type": ["string", "null"], "format": "date-time"},
+        "provenance_ref": {"type": "string", "minLength": 1},
+        "mission_relevance": {"enum": ["required", "supporting", "irrelevant"]},
+        "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "supersedes": {"type": ["string", "null"]},
+        "contradicts": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "payload": {}
+      }
+    }
+  }
+}

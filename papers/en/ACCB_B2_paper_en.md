@@ -4,7 +4,7 @@
 
 **Authors:** [to be completed before publication]  
 **Affiliation:** AIMETON Research  
-**Preprint version:** 0.3  
+**Preprint version:** 0.4 (major revision)  
 **Experiment date:** 8 September 2026
 
 ## Abstract
@@ -19,7 +19,7 @@ Five contemporary long-context models were evaluated: GPT-5.6 Sol, Kimi K3, Deep
 
 We introduce **ACI_B2 (ACCB Cognitive Integrity)**, an equally weighted composite of six normalized dimensions: Control State Score (CSS), Global Aggregate Score (GAS), Temporal Integrity Score (TIS), Dependency Consistency Score (DCS), Motor/Procedure Coherence Score (MCS), and Safety Score (SAS). `ACI_B2_min`, the minimum component value, captures severe local failure that may be obscured by the mean.
 
-Mean ACI_B2 over all five load levels was 0.907 for GPT-5.6 Sol, 0.888 for Kimi K3, 0.837 for DeepSeek V4 Pro, 0.756 for GLM-5.2, and 0.631 for Qwen 3.7 Plus. Performance profiles were strongly model-dependent and not strictly monotonic.
+In this pilot diagnostic study, with one generation per model × load condition (n=1), the observed five-tier mean ACI_B2 values were 0.907 for GPT-5.6 Sol, 0.888 for Kimi K3, 0.837 for DeepSeek V4 Pro, 0.756 for GLM-5.2, and 0.631 for Qwen 3.7 Plus. These values describe the realized observations rather than estimating expected model performance. The observed trajectories differed across models and were not strictly monotonic; with n=1, this is hypothesis-generating evidence rather than evidence for the shape of an underlying degradation function.
 
 The results support a distinction between **context acceptance**, **context utilization**, and **effective cognitive context**. Nominal context-window size alone is insufficient to characterize an LLM's ability to maintain a coherent representation of a long, dynamically evolving information state.
 
@@ -85,9 +85,9 @@ Canonical scenario identifier: `ACCB-B2-INFOLOAD-001`, version `0.1`.
 
 A separate deterministic seed was derived for each tier:
 
-[
+$$
 seed=first32bits(SHA256(scenario\_id \parallel version \parallel tier \parallel target\_bytes)).
-]
+$$
 
 The seed determines entity selection, event placement, control-panel selection, and the resulting reference state. The same code therefore reproduces the same semantic ledger for a given tier.
 
@@ -95,15 +95,15 @@ The seed determines entity selection, event placement, control-panel selection, 
 
 The generator manages up to 64 entities:
 
-[
+$$
 E0001,\ldots,E0064.
-]
+$$
 
 Each entity has state vector
 
-[
+$$
 S_i=(V_i,L_i,G_i,A_i,B_i,D_i),
-]
+$$
 
 where (V_i) is current version, (L_i) lifecycle state, (G_i) policy generation, (A_i) authorization state, (B_i) bounded numerical limit, and (D_i) dependency pointer.
 
@@ -125,9 +125,9 @@ The control-panel size is fixed at **12 entities** for every tier. Control entit
 
 Authoritative records form explicit version chains:
 
-[
+$$
 v\rightarrow v+1.
-]
+$$
 
 A transition is applicable only if its required version exactly matches the entity's current version.
 
@@ -175,17 +175,17 @@ Thus, at the largest tier a model must process more than fourteen thousand seman
 
 The generator validates that authoritative records form contiguous per-entity version chains:
 
-[
+$$
 0\rightarrow1\rightarrow2\rightarrow\dots\rightarrow N.
-]
+$$
 
 Removing an authoritative transition breaks the version precondition of the next transition and changes the terminal entity version.
 
 The benchmark additionally scores the sum of all entity versions,
 
-[
+$$
 \sum_i V_i,
-]
+$$
 
 so every authoritative record contributes to at least one scored terminal quantity.
 
@@ -193,23 +193,23 @@ The number of rejected stale/conflicting records is also a scored global aggrega
 
 ### 3.9. Semantic density and exact byte targets
 
-| Tier | Semantic-event bytes | Non-semantic terminal padding | Semantic share |
-|---|---:|---:|---:|
-| 32k | 30,882 | 105 | 99.66% |
-| 64k | 63,612 | 143 | 99.78% |
-| 140k | 142,111 | 41 | 99.97% |
-| 562k | 573,445 | 140 | 99.98% |
-| 2191k | 2,295,887 | 55 | >99.99% |
+| Tier | Semantic-event bytes | Fixed instruction/schema overhead | Terminal padding | Total |
+|---|---:|---:|---:|---:|
+| 32k | 30,882 | 1,781 | 105 | 32,768 |
+| 64k | 63,612 | 1,781 | 143 | 65,536 |
+| 140k | 142,111 | 1,782 | 41 | 143,934 |
+| 562k | 573,445 | 1,782 | 140 | 575,367 |
+| 2191k | 2,295,887 | 1,783 | 55 | 2,297,725 |
 
-A very small space-only padding field was permitted solely to reach the exact UTF-8 byte target. It was outside the semantic ledger, semantically empty, and limited to at most 256 bytes.
+The difference between semantic-event bytes and total request bytes is primarily the fixed request envelope: instruction, mission, rules, and output schema. Its size is nearly constant at 1,781–1,783 bytes. A very small space-only padding field was permitted solely to reach the exact UTF-8 byte target. It was outside the semantic ledger, semantically empty, and limited to at most 256 bytes.
 
 ### 3.10. Canonical request structure
 
 The materialized request consisted of:
 
-[
+$$
 Instruction + Mission + Rules + TemporalEventLedger + OutputContract.
-]
+$$
 
 The fixed instruction required the model to reconstruct authoritative current state, apply events only when version preconditions match, reject stale and conflicting records, perform no real mutation, and emit only the compact required structured answer.
 
@@ -237,6 +237,26 @@ Bytes rather than tokenizer-specific token counts were used as the primary cross
 
 The diagnostic experiment contained (5\times5=25) model × tier conditions. Each condition used one generation. Automatic retries and model fallback were disabled.
 
+### 5.1. Model inclusion criteria
+
+Models were included when they simultaneously satisfied practical admission criteria at the time of the experiment: API availability; advertised ability to accept the largest B2 payload through the selected route; an unambiguous model/provider identity; the ability to disable fallback to a different model; and a projected full-run cost compatible with the experiment budget.
+
+The sample is not intended to be exhaustive. In particular, the absence of Claude and Gemini should not be interpreted as a statement about their relative quality; those families were not part of the frozen five-model diagnostic matrix.
+
+### 5.2. Reasoning-compute regimes
+
+Inference-time reasoning compute was not fully normalized across vendors.
+
+| Model | Regime used in the published matrix |
+|---|---|
+| GPT-5.6 Sol | frozen admitted provider route; reasoning budget not cross-vendor normalized |
+| Kimi K3 | frozen admitted provider route; reasoning budget not cross-vendor normalized |
+| DeepSeek V4 Pro | frozen admitted provider route; reasoning budget not cross-vendor normalized |
+| Qwen 3.7 Plus | frozen admitted provider route; reasoning budget not cross-vendor normalized |
+| GLM-5.2 | explicit high-reasoning regime with a 32,768-token reasoning budget |
+
+The cross-model values therefore characterize model × route × inference-regime systems rather than weight-only model comparisons under equal compute.
+
 ## 6. Output Task
 
 The model produced a compact structured output rather than reproducing the ledger.
@@ -249,35 +269,35 @@ For each of 12 frozen control entities it returned version, lifecycle, policy ge
 
 Twelve control entities × six fields produce 72 exact comparisons:
 
-[
+$$
 CSS=\frac{N_{correct\ control\ fields}}{72}.
-]
+$$
 
 ### 7.2. Global Aggregate Score (GAS)
 
 Nine exact system-wide quantities were evaluated: active entity count; revoked entity count; allowed authorization count; sum of active bounded limits; dependency violation count; dependency edge count; sum of entity versions; sum of policy generations; rejected stale/conflicting record count.
 
-[
+$$
 GAS=\frac{N_{exact\ aggregate\ matches}}{9}.
-]
+$$
 
 ### 7.3. Temporal Integrity Score (TIS)
 
 TIS v0.1 is an aggregate temporal measure based on exact agreement for revoked entity count, allowed authorization count, and rejected stale/conflicting record count.
 
-[
+$$
 TIS=\frac{N_{correct\ temporal\ aggregates}}{3}.
-]
+$$
 
 ### 7.4. Dependency Consistency Score (DCS)
 
-[
+$$
 DCS=
 \begin{cases}
 1,& \text{dependency violation count exactly matches reference};\\
 0,& \text{otherwise}.
 \end{cases}
-]
+$$
 
 ### 7.5. Motor/Procedure Coherence Score (MCS)
 
@@ -291,31 +311,40 @@ The output was expected to contain the following ordered subsequence:
 6. compute global aggregates;
 7. emit control-state snapshot.
 
-[
+$$
 MCS=\frac{N_{ordered\ required\ stages\ matched}}{7}.
-]
+$$
 
 Hidden chain-of-thought is neither used nor retained.
 
 ### 7.6. Safety Score (SAS)
 
-[
+$$
 SAS=
 \begin{cases}
 1,& mutation\_performed=false;\\
 0,& mutation\_performed=true.
 \end{cases}
-]
+$$
 
 ### 7.7. Composite Cognitive Integrity
 
-[
+$$
 ACI_{B2}=\frac{CSS+GAS+TIS+DCS+MCS+SAS}{6}.
-]
+$$
 
-[
+$$
 ACI_{B2,min}=\min(CSS,GAS,TIS,DCS,MCS,SAS).
-]
+
+### 7.8. Rationale and sensitivity of equal dimension weights
+
+The six dimension weights were fixed before the published B2 outcomes were observed. Equal dimension weighting prevents CSS from automatically dominating the composite merely because it contains 72 primitive comparisons while other dimensions have lower granularity.
+
+This is a benchmark-design choice, not a uniquely validated psychometric weighting scheme. DCS and SAS are binary, whereas CSS, GAS, TIS, and MCS are fractional. A single global DCS or SAS failure can therefore reduce ACI_B2 by one sixth and force `ACI_B2_min=0`.
+
+ACI_B2 should therefore be interpreted alongside the component structure, and `ACI_B2_min=0` does not imply total task failure. A confirmatory version should include weighting sensitivity analysis and richer event-level temporal/dependency assertions.
+
+$$
 
 ## 8. Experimental Controls
 
@@ -325,9 +354,11 @@ Raw chain-of-thought was not retained.
 
 GLM-5.2 was evaluated under an explicitly fixed high-reasoning regime with a 32,768-token reasoning budget. Reasoning-compute regimes were not fully normalized across vendors; this is a limitation of cross-model comparison.
 
-## 9. Results
+## 9. Descriptive Results of the Pilot Run
 
 ### 9.1. ACI_B2
+
+Each value below comes from one generation. The table is intended to describe the realized observations and identify regions for confirmatory testing; it is not a statistical model ranking.
 
 | Model | 32k | 64k | 140k | 562k | 2191k | Mean |
 |---|---:|---:|---:|---:|---:|---:|
@@ -351,39 +382,39 @@ GLM-5.2 was evaluated under an explicitly fixed high-reasoning regime with a 32,
 
 GPT-5.6 Sol:
 
-[
+$$
 1.000\rightarrow0.926\rightarrow1.000\rightarrow1.000\rightarrow0.609.
-]
+$$
 
 Kimi K3:
 
-[
+$$
 1.000\rightarrow0.810\rightarrow1.000\rightarrow0.815\rightarrow0.815.
-]
+$$
 
 DeepSeek V4 Pro:
 
-[
+$$
 1.000\rightarrow0.741\rightarrow1.000\rightarrow0.815\rightarrow0.630.
-]
+$$
 
 GLM-5.2:
 
-[
+$$
 1.000\rightarrow0.815\rightarrow0.926\rightarrow0.560\rightarrow0.479.
-]
+$$
 
 Observed GLM reasoning-token consumption:
 
-[
+$$
 12081\rightarrow17686\rightarrow20932\rightarrow32768\rightarrow32768.
-]
+$$
 
 Qwen 3.7 Plus:
 
-[
+$$
 0.759\rightarrow0.407\rightarrow0.926\rightarrow0.556\rightarrow0.505.
-]
+$$
 
 ## 11. Extreme-Load Region
 
@@ -399,46 +430,46 @@ Qwen 3.7 Plus:
 
 The experiment supports
 
-[
+$$
 \boxed{NominalContextWindow\neq EffectiveCognitiveContext}
-]
+$$
 
 and
 
-[
+$$
 RawTextLength\neq SemanticInformationLoad.
-]
+$$
 
 ACCB B2 deliberately increases the latter.
 
-Observed model trajectories are not strictly monotonic, implying that long-context degradation cannot yet be represented as a simple deterministic penalty proportional to input size.
+Observed model trajectories are not strictly monotonic. With n=1, generation-level variability cannot be separated from a systematic load effect, so non-monotonicity is only a property of this realized series, not an established property of the underlying response curve.
 
 The minimum-component metric is also important: a model may preserve much of the global state while completely failing one specific temporal, dependency, procedural, or safety dimension.
 
 Finally, the GLM reasoning profile motivates a broader representation:
 
-[
+$$
 CognitiveIntegrity=f(SemanticLoad,ReasoningCompute,Model,InferenceRegime).
-]
+$$
 
 ## 13. Implications for Memory and Agent Systems
 
 The results challenge the naive architecture
 
-[
+$$
 EntireHistory\rightarrow LLMContext.
-]
+$$
 
 A more robust architecture may be
 
-[
+$$
 LongTermMemory
 \rightarrow CurrentStateReconstruction
 \rightarrow SemanticallySufficientWorkingContext
 \rightarrow LLM.
-]
+$$
 
-This creates an empirical motivation for semantic compression, memory consolidation, explicit current-state reconstruction, model routing based on semantic load, and pre-inference cognitive-risk estimation.
+This creates an empirical motivation for semantic compression, memory consolidation, explicit current-state reconstruction, model routing based on semantic load, and pre-inference cognitive-risk estimation. Semantic compression has previously been studied as a mechanism for extending effective context and reducing computation [8]; ACCB adds a testable hypothesis that it may also reduce active semantic integration load.
 
 ## 14. Limitations
 
@@ -456,17 +487,17 @@ Some B2 v0.1 component scores are deliberately compact. TIS is aggregate-level, 
 
 A confirmatory campaign with repeated samples would enable estimation of
 
-[
+$$
 P(ACI\geq\tau\mid L).
-]
+$$
 
 We propose defining
 
-[
+$$
 ECC_{\tau,p}
 =
 \max\{L:P(ACI\geq\tau\mid L)\geq p\}.
-]
+$$
 
 For example, (ECC_{0.9,0.95}) would denote the largest semantic load at which ACI remains at least 0.9 with probability of at least 95%.
 
@@ -487,7 +518,7 @@ The canonical public research repository is:
 **AIMETON/ACCB-benchmark**  
 https://github.com/AIMETON/ACCB-benchmark
 
-The repository contains the frozen B2 context generator, deterministic scorer, preregistered methodology, metric definitions, schemas, public reference scenarios, context hashes, result matrices, sanitized provenance records, and Russian and English versions of this paper.
+The repository publishes the frozen B2 context generator, deterministic scorer, preregistered methodology, metric definitions, schemas, public reference scenarios with positive and negative traces, context hashes, result matrices, sanitized provenance records, and Russian and English versions of this paper. Raw historical prompts, model completions, and hidden reasoning traces were not retained under the original evidence contract and therefore cannot be retrospectively released; this is an explicit reproducibility limitation.
 
 Recommended citation:
 

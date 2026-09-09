@@ -4,7 +4,7 @@
 
 **Authors:** [to be completed before publication]  
 **Affiliation:** AIMETON Research  
-**Preprint version:** 0.3  
+**Preprint version:** 0.4 (major revision)  
 **Experiment date:** 8 September 2026
 
 ## Abstract
@@ -19,7 +19,7 @@ Five contemporary long-context models were evaluated: GPT-5.6 Sol, Kimi K3, Deep
 
 We introduce **ACI_B2 (ACCB Cognitive Integrity)**, an equally weighted composite of six normalized dimensions: Control State Score (CSS), Global Aggregate Score (GAS), Temporal Integrity Score (TIS), Dependency Consistency Score (DCS), Motor/Procedure Coherence Score (MCS), and Safety Score (SAS). `ACI_B2_min`, the minimum component value, captures severe local failure that may be obscured by the mean.
 
-Mean ACI_B2 over all five load levels was 0.907 for GPT-5.6 Sol, 0.888 for Kimi K3, 0.837 for DeepSeek V4 Pro, 0.756 for GLM-5.2, and 0.631 for Qwen 3.7 Plus. Performance profiles were strongly model-dependent and not strictly monotonic.
+In this pilot diagnostic study, with one generation per model × load condition (n=1), the observed five-tier mean ACI_B2 values were 0.907 for GPT-5.6 Sol, 0.888 for Kimi K3, 0.837 for DeepSeek V4 Pro, 0.756 for GLM-5.2, and 0.631 for Qwen 3.7 Plus. These values describe the realized observations rather than estimating expected model performance. The observed trajectories differed across models and were not strictly monotonic; with n=1, this is hypothesis-generating evidence rather than evidence for the shape of an underlying degradation function.
 
 The results support a distinction between **context acceptance**, **context utilization**, and **effective cognitive context**. Nominal context-window size alone is insufficient to characterize an LLM's ability to maintain a coherent representation of a long, dynamically evolving information state.
 
@@ -193,15 +193,15 @@ The number of rejected stale/conflicting records is also a scored global aggrega
 
 ### 3.9. Semantic density and exact byte targets
 
-| Tier | Semantic-event bytes | Non-semantic terminal padding | Semantic share |
-|---|---:|---:|---:|
-| 32k | 30,882 | 105 | 99.66% |
-| 64k | 63,612 | 143 | 99.78% |
-| 140k | 142,111 | 41 | 99.97% |
-| 562k | 573,445 | 140 | 99.98% |
-| 2191k | 2,295,887 | 55 | >99.99% |
+| Tier | Semantic-event bytes | Fixed instruction/schema overhead | Terminal padding | Total |
+|---|---:|---:|---:|---:|
+| 32k | 30,882 | 1,781 | 105 | 32,768 |
+| 64k | 63,612 | 1,781 | 143 | 65,536 |
+| 140k | 142,111 | 1,782 | 41 | 143,934 |
+| 562k | 573,445 | 1,782 | 140 | 575,367 |
+| 2191k | 2,295,887 | 1,783 | 55 | 2,297,725 |
 
-A very small space-only padding field was permitted solely to reach the exact UTF-8 byte target. It was outside the semantic ledger, semantically empty, and limited to at most 256 bytes.
+The difference between semantic-event bytes and total request bytes is primarily the fixed request envelope: instruction, mission, rules, and output schema. Its size is nearly constant at 1,781–1,783 bytes. A very small space-only padding field was permitted solely to reach the exact UTF-8 byte target. It was outside the semantic ledger, semantically empty, and limited to at most 256 bytes.
 
 ### 3.10. Canonical request structure
 
@@ -325,9 +325,11 @@ Raw chain-of-thought was not retained.
 
 GLM-5.2 was evaluated under an explicitly fixed high-reasoning regime with a 32,768-token reasoning budget. Reasoning-compute regimes were not fully normalized across vendors; this is a limitation of cross-model comparison.
 
-## 9. Results
+## 9. Descriptive Results of the Pilot Run
 
 ### 9.1. ACI_B2
+
+Each value below comes from one generation. The table is intended to describe the realized observations and identify regions for confirmatory testing; it is not a statistical model ranking.
 
 | Model | 32k | 64k | 140k | 562k | 2191k | Mean |
 |---|---:|---:|---:|---:|---:|---:|
@@ -411,7 +413,7 @@ RawTextLength\neq SemanticInformationLoad.
 
 ACCB B2 deliberately increases the latter.
 
-Observed model trajectories are not strictly monotonic, implying that long-context degradation cannot yet be represented as a simple deterministic penalty proportional to input size.
+Observed model trajectories are not strictly monotonic. With n=1, generation-level variability cannot be separated from a systematic load effect, so non-monotonicity is only a property of this realized series, not an established property of the underlying response curve.
 
 The minimum-component metric is also important: a model may preserve much of the global state while completely failing one specific temporal, dependency, procedural, or safety dimension.
 
@@ -438,7 +440,7 @@ LongTermMemory
 \rightarrow LLM.
 ]
 
-This creates an empirical motivation for semantic compression, memory consolidation, explicit current-state reconstruction, model routing based on semantic load, and pre-inference cognitive-risk estimation.
+This creates an empirical motivation for semantic compression, memory consolidation, explicit current-state reconstruction, model routing based on semantic load, and pre-inference cognitive-risk estimation. Semantic compression has previously been studied as a mechanism for extending effective context and reducing computation [8]; ACCB adds a testable hypothesis that it may also reduce active semantic integration load.
 
 ## 14. Limitations
 
@@ -487,7 +489,7 @@ The canonical public research repository is:
 **AIMETON/ACCB-benchmark**  
 https://github.com/AIMETON/ACCB-benchmark
 
-The repository contains the frozen B2 context generator, deterministic scorer, preregistered methodology, metric definitions, schemas, public reference scenarios, context hashes, result matrices, sanitized provenance records, and Russian and English versions of this paper.
+The repository publishes the frozen B2 context generator, deterministic scorer, preregistered methodology, metric definitions, schemas, public reference scenarios with positive and negative traces, context hashes, result matrices, sanitized provenance records, and Russian and English versions of this paper. Raw historical prompts, model completions, and hidden reasoning traces were not retained under the original evidence contract and therefore cannot be retrospectively released; this is an explicit reproducibility limitation.
 
 Recommended citation:
 

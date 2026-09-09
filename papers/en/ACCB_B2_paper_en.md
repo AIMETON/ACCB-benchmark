@@ -85,9 +85,9 @@ Canonical scenario identifier: `ACCB-B2-INFOLOAD-001`, version `0.1`.
 
 A separate deterministic seed was derived for each tier:
 
-$
+$$
 seed=first32bits(SHA256(scenario\_id \parallel version \parallel tier \parallel target\_bytes)).
-$
+$$
 
 The seed determines entity selection, event placement, control-panel selection, and the resulting reference state. The same code therefore reproduces the same semantic ledger for a given tier.
 
@@ -95,15 +95,15 @@ The seed determines entity selection, event placement, control-panel selection, 
 
 The generator manages up to 64 entities:
 
-$
+$$
 E0001,\ldots,E0064.
-$
+$$
 
 Each entity has state vector
 
-$
+$$
 S_i=(V_i,L_i,G_i,A_i,B_i,D_i),
-$
+$$
 
 where (V_i) is current version, (L_i) lifecycle state, (G_i) policy generation, (A_i) authorization state, (B_i) bounded numerical limit, and (D_i) dependency pointer.
 
@@ -125,9 +125,9 @@ The control-panel size is fixed at **12 entities** for every tier. Control entit
 
 Authoritative records form explicit version chains:
 
-$
+$$
 v\rightarrow v+1.
-$
+$$
 
 A transition is applicable only if its required version exactly matches the entity's current version.
 
@@ -175,17 +175,17 @@ Thus, at the largest tier a model must process more than fourteen thousand seman
 
 The generator validates that authoritative records form contiguous per-entity version chains:
 
-$
+$$
 0\rightarrow1\rightarrow2\rightarrow\dots\rightarrow N.
-$
+$$
 
 Removing an authoritative transition breaks the version precondition of the next transition and changes the terminal entity version.
 
 The benchmark additionally scores the sum of all entity versions,
 
-$
+$$
 \sum_i V_i,
-$
+$$
 
 so every authoritative record contributes to at least one scored terminal quantity.
 
@@ -207,9 +207,9 @@ The difference between semantic-event bytes and total request bytes is primarily
 
 The materialized request consisted of:
 
-$
+$$
 Instruction + Mission + Rules + TemporalEventLedger + OutputContract.
-$
+$$
 
 The fixed instruction required the model to reconstruct authoritative current state, apply events only when version preconditions match, reject stale and conflicting records, perform no real mutation, and emit only the compact required structured answer.
 
@@ -269,35 +269,35 @@ For each of 12 frozen control entities it returned version, lifecycle, policy ge
 
 Twelve control entities × six fields produce 72 exact comparisons:
 
-$
+$$
 CSS=\frac{N_{correct\ control\ fields}}{72}.
-$
+$$
 
 ### 7.2. Global Aggregate Score (GAS)
 
 Nine exact system-wide quantities were evaluated: active entity count; revoked entity count; allowed authorization count; sum of active bounded limits; dependency violation count; dependency edge count; sum of entity versions; sum of policy generations; rejected stale/conflicting record count.
 
-$
+$$
 GAS=\frac{N_{exact\ aggregate\ matches}}{9}.
-$
+$$
 
 ### 7.3. Temporal Integrity Score (TIS)
 
 TIS v0.1 is an aggregate temporal measure based on exact agreement for revoked entity count, allowed authorization count, and rejected stale/conflicting record count.
 
-$
+$$
 TIS=\frac{N_{correct\ temporal\ aggregates}}{3}.
-$
+$$
 
 ### 7.4. Dependency Consistency Score (DCS)
 
-$
+$$
 DCS=
 \begin{cases}
 1,& \text{dependency violation count exactly matches reference};\\
 0,& \text{otherwise}.
 \end{cases}
-$
+$$
 
 ### 7.5. Motor/Procedure Coherence Score (MCS)
 
@@ -311,29 +311,29 @@ The output was expected to contain the following ordered subsequence:
 6. compute global aggregates;
 7. emit control-state snapshot.
 
-$
+$$
 MCS=\frac{N_{ordered\ required\ stages\ matched}}{7}.
-$
+$$
 
 Hidden chain-of-thought is neither used nor retained.
 
 ### 7.6. Safety Score (SAS)
 
-$
+$$
 SAS=
 \begin{cases}
 1,& mutation\_performed=false;\\
 0,& mutation\_performed=true.
 \end{cases}
-$
+$$
 
 ### 7.7. Composite Cognitive Integrity
 
-$
+$$
 ACI_{B2}=\frac{CSS+GAS+TIS+DCS+MCS+SAS}{6}.
-$
+$$
 
-$
+$$
 ACI_{B2,min}=\min(CSS,GAS,TIS,DCS,MCS,SAS).
 
 ### 7.8. Rationale and sensitivity of equal dimension weights
@@ -344,7 +344,7 @@ This is a benchmark-design choice, not a uniquely validated psychometric weighti
 
 ACI_B2 should therefore be interpreted alongside the component structure, and `ACI_B2_min=0` does not imply total task failure. A confirmatory version should include weighting sensitivity analysis and richer event-level temporal/dependency assertions.
 
-$
+$$
 
 ## 8. Experimental Controls
 
@@ -382,39 +382,39 @@ Each value below comes from one generation. The table is intended to describe th
 
 GPT-5.6 Sol:
 
-$
+$$
 1.000\rightarrow0.926\rightarrow1.000\rightarrow1.000\rightarrow0.609.
-$
+$$
 
 Kimi K3:
 
-$
+$$
 1.000\rightarrow0.810\rightarrow1.000\rightarrow0.815\rightarrow0.815.
-$
+$$
 
 DeepSeek V4 Pro:
 
-$
+$$
 1.000\rightarrow0.741\rightarrow1.000\rightarrow0.815\rightarrow0.630.
-$
+$$
 
 GLM-5.2:
 
-$
+$$
 1.000\rightarrow0.815\rightarrow0.926\rightarrow0.560\rightarrow0.479.
-$
+$$
 
 Observed GLM reasoning-token consumption:
 
-$
+$$
 12081\rightarrow17686\rightarrow20932\rightarrow32768\rightarrow32768.
-$
+$$
 
 Qwen 3.7 Plus:
 
-$
+$$
 0.759\rightarrow0.407\rightarrow0.926\rightarrow0.556\rightarrow0.505.
-$
+$$
 
 ## 11. Extreme-Load Region
 
@@ -430,15 +430,15 @@ $
 
 The experiment supports
 
-$
+$$
 \boxed{NominalContextWindow\neq EffectiveCognitiveContext}
-$
+$$
 
 and
 
-$
+$$
 RawTextLength\neq SemanticInformationLoad.
-$
+$$
 
 ACCB B2 deliberately increases the latter.
 
@@ -448,26 +448,26 @@ The minimum-component metric is also important: a model may preserve much of the
 
 Finally, the GLM reasoning profile motivates a broader representation:
 
-$
+$$
 CognitiveIntegrity=f(SemanticLoad,ReasoningCompute,Model,InferenceRegime).
-$
+$$
 
 ## 13. Implications for Memory and Agent Systems
 
 The results challenge the naive architecture
 
-$
+$$
 EntireHistory\rightarrow LLMContext.
-$
+$$
 
 A more robust architecture may be
 
-$
+$$
 LongTermMemory
 \rightarrow CurrentStateReconstruction
 \rightarrow SemanticallySufficientWorkingContext
 \rightarrow LLM.
-$
+$$
 
 This creates an empirical motivation for semantic compression, memory consolidation, explicit current-state reconstruction, model routing based on semantic load, and pre-inference cognitive-risk estimation. Semantic compression has previously been studied as a mechanism for extending effective context and reducing computation [8]; ACCB adds a testable hypothesis that it may also reduce active semantic integration load.
 
@@ -487,17 +487,17 @@ Some B2 v0.1 component scores are deliberately compact. TIS is aggregate-level, 
 
 A confirmatory campaign with repeated samples would enable estimation of
 
-$
+$$
 P(ACI\geq\tau\mid L).
-$
+$$
 
 We propose defining
 
-$
+$$
 ECC_{\tau,p}
 =
 \max\{L:P(ACI\geq\tau\mid L)\geq p\}.
-$
+$$
 
 For example, (ECC_{0.9,0.95}) would denote the largest semantic load at which ACI remains at least 0.9 with probability of at least 95%.
 
